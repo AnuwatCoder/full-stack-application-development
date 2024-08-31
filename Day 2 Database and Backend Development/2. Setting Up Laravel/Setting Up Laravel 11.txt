@@ -1,0 +1,135 @@
+Here's the guide converted to plain text format. You can copy and save it as a `.txt` file:
+
+---
+
+**Setting Up Laravel 11 with PostgreSQL**
+
+1. **Install Laravel**
+
+   Ensure you have Composer installed. If not, download it from [getcomposer.org](https://getcomposer.org/).
+
+   Create a new Laravel project:
+
+   ```
+   composer create-project --prefer-dist laravel/laravel my-project
+   ```
+
+   Replace `my-laravel-app` with your desired project name.
+
+2. **Install PostgreSQL**
+
+   Download and install PostgreSQL from [PostgreSQL's official site](https://www.postgresql.org/download/).
+
+3. **Configure PostgreSQL Database**
+
+   a. **Create a Database:**
+
+      Log in to PostgreSQL CLI or use a graphical tool like pgAdmin to create a new database:
+
+      ```
+      CREATE DATABASE my_laravel_db;
+      ```
+
+   b. **Create a User and Grant Privileges:**
+
+      Create a user and grant it permissions:
+
+      ```
+      CREATE USER my_laravel_user WITH PASSWORD 'your_password';
+      GRANT ALL PRIVILEGES ON DATABASE my_laravel_db TO my_laravel_user;
+      ```
+
+4. **Configure Laravel to Use PostgreSQL**
+
+   a. **Edit `.env` File:**
+
+      Open the `.env` file in your Laravel project and configure the database settings:
+
+      ```
+      DB_CONNECTION=pgsql
+      DB_HOST=127.0.0.1
+      DB_PORT=5432
+      DB_DATABASE=my_laravel_db
+      DB_USERNAME=my_laravel_user
+      DB_PASSWORD=your_password
+      ```
+
+   b. **Update `config/database.php`:**
+
+      Ensure the PostgreSQL configuration in `config/database.php` looks like this:
+
+      ```
+      'connections' => [
+          'pgsql' => [
+              'driver' => 'pgsql',
+              'host' => env('DB_HOST', '127.0.0.1'),
+              'port' => env('DB_PORT', '5432'),
+              'database' => env('DB_DATABASE', 'forge'),
+              'username' => env('DB_USERNAME', 'forge'),
+              'password' => env('DB_PASSWORD', ''),
+              'charset' => 'utf8',
+              'prefix' => '',
+              'schema' => 'public',
+              'sslmode' => 'prefer',
+          ],
+      ],
+      ```
+
+5. **Run Migrations**
+
+   Run Laravel’s default migrations:
+
+   ```
+   php artisan migrate
+   ```
+
+6. **Test Your Setup**
+
+   Create a simple route and model to test PostgreSQL:
+
+   a. **Create a Model and Migration:**
+
+      ```
+      php artisan make:model Post -m
+      ```
+
+      This creates a `Post` model and migration file in `database/migrations`.
+
+   b. **Define Migration Schema:**
+
+      Edit the migration file to define the schema for the `posts` table:
+
+      ```
+      public function up()
+      {
+          Schema::create('posts', function (Blueprint $table) {
+              $table->id();
+              $table->string('title');
+              $table->text('content');
+              $table->timestamps();
+          });
+      }
+      ```
+
+   c. **Run the Migration:**
+
+      ```
+      php artisan migrate
+      ```
+
+   d. **Create a Route and Controller:**
+
+      Define a route and controller to interact with the `posts` table. In `routes/web.php`:
+
+      ```
+      Route::get('/posts', function () {
+          $posts = \App\Models\Post::all();
+          return $posts;
+      });
+      ```
+
+      Visit `http://localhost/posts` to check if everything is working.
+
+---
+
+You can save this as a `.txt` file for your reference.
