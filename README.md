@@ -2,11 +2,11 @@
 
 ## 🚀 Overview
 
-Welcome to the **Full Stack Application Development Workshop**! This workshop will guide you through building a full-stack application using Laravel 11, React, and PostgreSQL. Join us from **September 4th to September 6th, 2024** for an intensive and hands-on experience in web development.
+Welcome to the **Full Stack Application Development Workshop**! This workshop will guide you through building a full-stack application using Laravel 11, React, and PostgreSQL. Join us from Workshop for an intensive and hands-on experience in web development.
 
 ## 📅 Schedule
 
-### Day 1: Foundations of Web Development (4 September 2024)
+### Day 1: Foundations of Web Development
 
 #### Morning: HTML & CSS Basics
 
@@ -31,7 +31,7 @@ Welcome to the **Full Stack Application Development Workshop**! This workshop wi
   - Making simple API requests with JavaScript (fetch or Axios)
   - Displaying API data on a webpage
 
-### Day 2: Database and Backend Development (5 September 2024)
+### Day 2: Database and Backend Development
 
 #### Morning: PostgreSQL Basics and Introduction to Laravel
 
@@ -60,7 +60,7 @@ Welcome to the **Full Stack Application Development Workshop**! This workshop wi
   - Using tools like Postman to test API endpoints
   - Validating API responses and error handling
 
-### Day 3: React with Laravel API (6 September 2024)
+### Day 3: React with Laravel API
 
 #### Morning: Introduction to React
 
