@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <h1>Fetched Data by Axios</h1>
+    <div class="data-container" id="data-container">
+        Loading data...
+    </div>
+
+    <script>
+        // Example for GET request using axios
+        axios.get('https://dummyjson.com/products')
+            .then(response => {
+                // Access the data from the response
+                const data = response.data;
+                console.log('GET request data:', data);
+
+                // Get the container to display the data
+                const container = document.getElementById('data-container');
+
+                const productsHtml = data.products.map(product => `
+                    <div class="product">
+                        <h2>${product.title}</h2>
+                        <p><strong>Description:</strong> ${product.description}</p>
+                        <p><strong>Price:</strong> $${product.price.toFixed(2)}</p>   
+                    </div>
+                    <hr>
+                `).join('');
+
+                container.innerHTML = productsHtml;
+            })
+            .catch(error => {
+                console.error('There was a problem with the axios operation:', error);
+                const container = document.getElementById('data-container');
+                container.innerHTML = 'There was a problem loading the data.';
+            });
+    </script>
+</body>
+
+</html>

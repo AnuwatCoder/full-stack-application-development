@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Fetched Data</h1>
+    <div class="data-container" id="data-container">
+        Loading data...
+    </div>
+    
+    <script>
+        // Example for GET request
+        fetch('https://dummyjson.com/products')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('GET request data:', data);
+
+                // Get the container to display the data
+                const container = document.getElementById('data-container');
+
+                 const productsHtml = data.products.map(product => `
+                    <div class="product">
+                        <h2>${product.title}</h2>
+                        <p><strong>Description:</strong> ${product.description}</p>
+                        <p><strong>Price:</strong> $${product.price.toFixed(2)}</p>   
+                    </div>
+                    <hr>
+                `).join('');
+
+                container.innerHTML = productsHtml;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    </script>
+</body>
+
+</html>
