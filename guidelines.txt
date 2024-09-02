@@ -626,3 +626,5 @@ Step 14: ทดสอบ Register และ Login/Logout API
 3.React Composition API
 4.Consuming REST API in React
 -------------------------------------------------------
+
+Step 1: Install Vite in Global

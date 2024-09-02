@@ -1,0 +1,2 @@
+Install Tailwind CSS with Vite
+URL: https://tailwindcss.com/docs/guides/vite
