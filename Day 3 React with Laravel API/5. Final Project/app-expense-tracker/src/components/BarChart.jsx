@@ -1,73 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
+  PointElement,
   CategoryScale,
   LinearScale,
   Title,
+  Tooltip,
+  Legend,
 } from "chart.js";
-import { chartDataByUser } from "../services/api"; // Adjust the import path as needed
+import { chartDataByUser } from "../services/api"; // Adjust the path as necessary
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, Title);
+// Register required components for Chart.js
+ChartJS.register(
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const BarChart = () => {
-  const [data, setData] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Monthly Data",
-        data: [],
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  });
+const LineChart = () => {
+  const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); // Start loading indicator
+    const fetchChartData = async () => {
       try {
-        const result = await chartDataByUser(); // Fetch data from API
-        console.log(result); // Debug: log result to see its structure
-
-        // Check if result is valid and non-empty
-        if (
-          result &&
-          typeof result === "object" &&
-          Object.keys(result).length > 0
-        ) {
-          setData({
-            labels: Object.keys(result), // Set labels for the chart
-            datasets: [
-              {
-                label: "Monthly Data",
-                data: Object.values(result), // Set data points for the chart
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
-              },
-            ],
-          });
-        } else {
-          // Handle case where result is empty or invalid
-          setError("No data available.");
-        }
-      } catch (error) {
-        // Handle any errors during data fetching
-        setError(error.message || "An error occurred while fetching data.");
+        const data = await chartDataByUser();
+        setChartData(data);
+      } catch (err) {
+        setError(err.message || "Error fetching data");
       } finally {
-        setLoading(false); // Stop loading indicator
+        setLoading(false);
       }
     };
 
-    fetchData(); // Call the function to fetch data
-  }, []); // Empty dependency array means this effect runs once on mount
+    fetchChartData();
+  }, []);
 
-  // Options for the chart
+  // Transform the fetched data to fit Chart.js format
+  const transformData = (data) => {
+    const labels = Object.keys(data);
+    const values = Object.values(data);
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Expenses",
+          data: values,
+          fill: false,
+          borderColor: "rgb(75, 192, 192)",
+          tension: 0.1,
+        },
+      ],
+    };
+  };
+
   const options = {
     responsive: true,
     plugins: {
@@ -76,31 +70,46 @@ const BarChart = () => {
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem) {
-            return `Value: ${tooltipItem.raw}`;
+          label: function (context) {
+            let label = context.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            if (context.parsed.y !== null) {
+              label += context.parsed.y;
+            }
+            return label;
           },
         },
       },
     },
+    scales: {
+      x: {
+        beginAtZero: true,
+      },
+      y: {
+        beginAtZero: true,
+      },
+    },
   };
 
-  // Conditional rendering based on loading and error states
   if (loading) {
-    return <div>Loading chart data...</div>;
-  } else {
-    return <div>Can't load data</div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error loading chart data: {error}</div>;
+    return <div>Error: {error}</div>;
   }
 
-  // Render the chart if data is available
+  if (!chartData) {
+    return <div>No data available</div>;
+  }
+
   return (
     <div>
-      <Line data={data} options={options} />
+      <Line data={transformData(chartData)} options={options} />
     </div>
   );
 };
 
-export default BarChart;
+export default LineChart;
