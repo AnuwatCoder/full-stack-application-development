@@ -1,0 +1,10 @@
+http://127.0.0.1:8000/api/register
+method : POST
+
+{
+    "name":"John Doe",
+    "email":"johnsdff25@email.com",
+    "tel": "000005000",
+    "password":"123456",
+    "password_confirmation":"123456"
+}
